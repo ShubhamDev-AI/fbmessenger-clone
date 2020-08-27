@@ -32,7 +32,6 @@ export default class SignUp extends Component {
     this.setState({ err: '' })
     try {
       await signup(email, password)
-      // alert('Đã đăng kí thành công, xin hãy click "Login"!')
     } catch (err) {
       this.setState({ err: err.message })
     }

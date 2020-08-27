@@ -20,6 +20,8 @@ function Header() {
                 onClick={() => auth().signOut()}>
                 Logout
               </button>
+              {/* Cách KO hiện warning of <a href=''/> */}
+              {/* <a href="#!" onClick={() => auth().signOut()}>Logout</a> */}
             </div>
             : <div className="navbar-nav">
               <Link className="nav-item nav-link mr-3" to="/login">Log in</Link>

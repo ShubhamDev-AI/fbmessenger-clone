@@ -37,6 +37,7 @@ class App extends Component {
     loading: true,
   }
   componentDidMount() {
+    //1) auth().onAuthStateChanged()
     auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({
@@ -61,10 +62,13 @@ class App extends Component {
           <PrivateRoute path="/chat" authenticated={authenticated} component={Chat} />
           <PublicRoute path="/login" authenticated={authenticated} component={Login} />
           <PublicRoute path="/signup" authenticated={authenticated} component={Signup} />
+          <Route component={NoMatch} />
         </Switch>
       </Router>
     )
   }
 }
+const NoMatch = ({ location }) =>
+  <h1>404. No route match for {location.pathname}</h1>
 
 export default App
