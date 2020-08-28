@@ -1,12 +1,12 @@
 import { auth } from "../services/firebase"
 
-export function signup(email, password) {
+export function signup(email, password, photoURL) {
   return (
     //1) auth().createUserWithEmailAndPassword()
     auth().createUserWithEmailAndPassword(email, password)
       .then(() => {
         auth().currentUser
-          .updateProfile({ displayName: email })
+          .updateProfile({ displayName: email, photoURL })
       })
   )
 }

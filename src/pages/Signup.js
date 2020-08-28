@@ -10,6 +10,7 @@ export default class SignUp extends Component {
       err: null,
       email: '',
       password: '',
+      photoURL: '',
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -18,20 +19,25 @@ export default class SignUp extends Component {
   }
 
   handleChange(event) {
+    const { name, value, type } = event.target
     this.setState({
-      [event.target.name]: event.target.value
+      [name]: value
     })
+    if (type === 'select-one') {
+      document.getElementById('image_preview').src = value
+    }
   }
 
   async handleSubmit(event) {
     const {
       email,
       password,
+      photoURL,
     } = this.state
     event.preventDefault()
     this.setState({ err: '' })
     try {
-      await signup(email, password)
+      await signup(email, password, photoURL)
     } catch (err) {
       this.setState({ err: err.message })
     }
@@ -59,6 +65,7 @@ export default class SignUp extends Component {
       err,
       email,
       password,
+      photoURL,
     } = this.state
     return (
       <div className="container">
@@ -76,6 +83,21 @@ export default class SignUp extends Component {
             <input className="form-control" placeholder="Password" name="password"
               onChange={this.handleChange} value={password} type="password"></input>
           </div>
+
+          <div className="form-group">
+            <i className="fa fa-camera" />
+            {' '}
+            <select name="photoURL"
+              value={photoURL} onChange={this.handleChange}>
+              <option value='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT3xzYvQWyS8JS6g3PXJwsf8dcEi6bgjjJocg&usqp=CAU'>Hình 1</option>
+              <option value='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcROrpa-OR0dG5As3B2u_9_loE-FulOlDDQKtF1g_tclfJILjW5I'>Hình 2</option>
+              <option value='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRd-y-IJN8glQlf1qoU01dEgGPUa0d1-sjfWg&usqp=CAU'>Hình 3</option>
+            </select>
+          </div>
+          <div className={photoURL != null ? 'file-upload-previewer' : 'file-upload-previewer hidden'}>
+            <img src="" alt="" id="image_preview" />
+          </div>
+
           <div className="form-group">
             {err ? <p className="text-danger">{err}</p> : null}
             <button className="btn btn-primary px-5" type="submit">Đăng kí</button>
