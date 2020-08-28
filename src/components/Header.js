@@ -7,9 +7,7 @@ function Header() {
     <header>
       <nav className="navbar navbar-expand-sm fixed-top navbar-light bg-light">
         <div className="navbar-brand">
-          <img src="https://facebookbrand.com/wp-content/uploads/2018/09/Header-e1538151782912.png?w=50&h=50"
-            style={{ marginTop: '3px' }} alt='fb-icon' />
-          {'  '} FBMessengerClone
+          <span role="img" aria-label="mail">📲</span>FBMessengerClone
           </div>
         <button className="navbar-toggler" type="button" data-toggle="collapse"
           data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"

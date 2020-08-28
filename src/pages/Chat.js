@@ -1,9 +1,11 @@
-import { IconButton, Input, FormControl, CardContent, Typography, Card } from '@material-ui/core'
+import { IconButton, Input, FormControl } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 import React, { Component } from "react"
 import Header from "../components/Header"
 import { auth, db } from "../services/firebase"
 import FlipMove from 'react-flip-move'
+import Msg from './Msg'
+import './Msg.css'
 import './Chat.css'
 
 export default class Chat extends Component {
@@ -80,12 +82,6 @@ export default class Chat extends Component {
     }
   }
 
-  formatTime(timestamp) {
-    const d = new Date(timestamp)
-    const time = `${d.getDate()}/${(d.getMonth() + 1)}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`
-    return time
-  }
-
   render() {
     const { loadingChats, chats, user, chatsContent, readError, writeError } = this.state
     return (
@@ -93,6 +89,14 @@ export default class Chat extends Component {
         <Header />
 
         <div className="chat-area" ref={this.refChatArea}>
+          <div className="App">
+            <img src="https://facebookbrand.com/wp-content/uploads/2018/09/Header-e1538151782912.png?w=100&h=100"
+              style={{ marginTop: '1px' }} alt='fb-icon' />
+            <h2>FB Messenger</h2>
+            <small className="mess__username">
+              Xin chào {(user.displayName) ? user.displayName : user.email}
+            </small>
+          </div>
           {/* loading indicator */}
           {loadingChats ? <div className="spinner-border text-success" role="status">
             <span className="sr-only">Loading...</span>
@@ -100,45 +104,8 @@ export default class Chat extends Component {
           {readError ? <p className="text-danger">{readError}</p> : null}
           {/* chat area */}
           <FlipMove style={{ zIndex: -1 }}>
-            {chats.map(chat_item => {
-              const isUser = user.uid === chat_item.uid
-              return (
-                <div className="messageBox" key={chat_item.timestamp}>
-                  <div className={`message ${isUser && 'message__user'}`} >
-                    <small style={{
-                      textAlign: 'center',
-                      position: 'relative',
-                      '& button': {
-                        position: 'absolute',
-                        top: '80%',
-                        left: '70%'
-                      }
-                    }}>
-                      <img src={chat_item.photoURL} alt={chat_item.name} style={{
-                        width: 25,
-                        height: 25,
-                        objectFit: 'cover',
-                        maxWidth: '100%',
-                        borderRadius: '50%'
-                      }} />
-                    </small>
-                    <small className="mess__username" >
-                      {chat_item.name}
-                    </small>
-                    <Card style={{ borderRadius: '1.3em', lineHeight: '1.34', width: 'fit-content' }}>
-                      <CardContent className={isUser ? 'message__userCard' : 'message__guestCard'} style={{ paddingTop: '6px', paddingRight: '12px', paddingBottom: '7px', paddingLeft: '12px' }}>
-                        <Typography>
-                          <big>{chat_item.content}</big>
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                    <small className="mess__username float-right">
-                      <i>{this.formatTime(chat_item.timestamp)}</i>
-                    </small>
-                  </div>
-                  <br /><br />
-                </div>
-              )
+            {chats.map((chat_item, chiso) => {
+              return <Msg key={chiso} user={user} chat_item={chat_item} />
             })}
           </FlipMove>
         </div>
@@ -153,7 +120,7 @@ export default class Chat extends Component {
           </FormControl>
         </form>
         <div className="py-5 mx-3">
-          Tài khoản login: <strong className="text-info">{user.email}</strong>
+          <span role="img" aria-label="mail">📩</span> login: <strong className="text-info">{user.email}</strong>
         </div>
       </div>
     )
